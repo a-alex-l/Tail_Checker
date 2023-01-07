@@ -2,9 +2,9 @@ library(extremeStat)
 
 get_gpd_delimeter <- function(percentile) {
   gpd_delimeter <- function(data) {
-    delimeters <- q_gpd(x=data, probs=c(percentile),
-                                list=TRUE, quiet=TRUE)
-    print(delimeters$quant)
+    delimeters <- distLquantile(x=data, probs=c(percentile), selection="gpa",
+                                list=TRUE, quiet=TRUE, gpquiet=TRUE)
+    # print(delimeters$quant)
     return(delimeters$quant[1, 1])
   }
 }
