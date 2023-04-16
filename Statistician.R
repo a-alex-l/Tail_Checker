@@ -6,7 +6,7 @@ plan(multisession, workers=5)
 options(scipen=999)
 
 TARGET_TN <- 0.999
-SEED <- 9 # 34
+SEED <- 34
 DATA_SIZE <- 1000
 MIN_WORK_SIZE <- 100
 set.seed(SEED)
@@ -22,8 +22,8 @@ quantile_givers = list(
   list("source" = "quantile_givers/gpd_evir_delimeter.R", "name" = "gpd_evir"),
   list("source" = "quantile_givers/gpd_gmle_delimeter.R", "name" = "gpd_gmle"),
   list("source" = "quantile_givers/gpd_delimeter.R", "name" = "gpd_stnd"),
-  list("source" = "quantile_givers/my_gpd_delimeter.R", "name" = "gpd_mine"),
   list("source" = "quantile_givers/gpd_Lmoments_delimeter.R", "name" = "gpd_lmom"),
+  list("source" = "quantile_givers/my_gpd_delimeter.R", "name" = "gpd_mine"),
   list("source" = "quantile_givers/new_delimeter.R", "name" = "gpd__new")
 )
 
@@ -48,17 +48,17 @@ for (i in 1:length(tests)) {
   }
   par(mfrow=c(2, length(quantile_givers) / 2))
   for (j in 1:length(quantile_givers)) {
-    show_data <- as.numeric(percents[[1 + (i - 1) * length(quantile_givers) + (j - 1)]])
-    left <- min(min(show_data), TARGET_TN)
-    right <- max(max(show_data), TARGET_TN)
-    hist(show_data, breaks=20, 
+    percent <- as.numeric(percents[[1 + (i - 1) * length(quantile_givers) + (j - 1)]])
+    left <- min(min(percent), TARGET_TN)
+    right <- max(max(percent), TARGET_TN)
+    hist(percent, breaks=50, 
          xlim=c(left, right),
-         main=paste(tests[[i]]$name, quantile_givers[[j]]$name))
+         main=paste(tests[[i]]$name, quantile_givers[[j]]$name, '=', signif(mean(percent), digits=5 )))
     abline(v=TARGET_TN, col="green", lwd=4)
-    abline(v=mean(show_data), col="blue", lwd=2)
+    abline(v=mean(percent), col="blue", lwd=2)
     print(paste(tests[[i]]$name, quantile_givers[[j]]$name,
-                "equals to", signif(abs(TARGET_TN - mean(show_data)), digits = 3),
-                "mean is", signif(mean(show_data), digits = 5)))
+                "equals to", signif(abs(TARGET_TN - mean(percent)), digits=3),
+                "mean is", signif(mean(percent), digits=5)))
   }
   print("added chart")
 }
