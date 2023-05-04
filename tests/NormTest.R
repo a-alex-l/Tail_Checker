@@ -4,7 +4,7 @@ get_data <- function(size) {
   current_params <- runif(2, 1, 2)
   for (i in 1:size) {
     params <- append(params, current_params)
-    data <- append(data, rcauchy(1, current_params[1], current_params[2]))
+    data <- append(data, rnorm(1, current_params[1], current_params[2]))
     # if (sample(1:100, 1) == 1) {
     #   current_params[1] <- current_params[1] * runif(1, 0.975, 1.1)
     # }
@@ -16,7 +16,7 @@ get_data <- function(size) {
 get_positions <- function(quantiles, params, size) {
   positions <- list()
   for (i in 1:size) {
-    positions <- append(positions, pcauchy(quantiles[i], params[[i * 2 - 1]], params[[i * 2]]))
+    positions <- append(positions, pnorm(quantiles[i], params[[i * 2 - 1]], params[[i * 2]]))
   }
   return(positions)
 }

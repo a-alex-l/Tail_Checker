@@ -6,7 +6,7 @@ get_delimeter <- function(percentile) {
     #                            list=TRUE, quiet=TRUE, gpquiet=TRUE)
     #print(delimeters$quant)
     #return(delimeters$quant[1, 1])
-    delimeter <- q_gpd(unlist(data), package="fExtremes", truncate=0.8, probs=percentile)
+    delimeter <- q_gpd(unlist(data), package="fExtremes", truncate=0.5, probs=percentile)
     return(unlist(delimeter[1]))
   }
 }

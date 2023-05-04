@@ -8,9 +8,13 @@ get_delimeter <- function(percentile) {
       q_gpd(unlist(data)       , package="extRemes", method="Lmoments", truncate=0.5, probs=percentile)[1],
       q_gpd(unlist(data)       , package="extRemes", method="GMLE", truncate=0.5, probs=percentile)[1],
       q_gpd(unlist(data[1:p1]) , package="extRemes", method="Lmoments", truncate=0.5, probs=percentile)[1] * 0.5 + 
-      q_gpd(unlist(data[p1:p2]), package="extRemes", method="GMLE", truncate=0.5, probs=percentile)[1] * 0.5
+        q_gpd(unlist(data[p1:p2]), package="extRemes", method="GMLE", truncate=0.5, probs=percentile)[1] * 0.5
       
     )
-    return(median(unlist(delimeters)))
+    if (abs(delimeters[3] - delimeters[1]) < abs(delimeters[3] - delimeters[2])) {
+      return(delimeters[1])
+    } else {
+      return(delimeters[2])
+    }
   }
 }
