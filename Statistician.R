@@ -6,7 +6,7 @@ plan(multisession, workers=6)
 options(scipen=999)
 
 TARGET_TN <- 0.999
-SEED <- 15
+SEED <- 17
 DATA_SIZE <- 50000
 MIN_WORK_SIZE <- 100
 set.seed(SEED)
@@ -33,7 +33,7 @@ quantile_givers = list(
 )
 
 tests <- list(
-#  list("source" = "tests/LnormTest.R", "name" = "lnorm"),
+  list("source" = "tests/LnormTest.R", "name" = "lnorm"),
   list("source" = "tests/PingTest.R", "name" = "ping"),
   list("source" = "tests/StudTest.R", "name" = "stud"),
   list("source" = "tests/NormTest.R", "name" = "norm"),

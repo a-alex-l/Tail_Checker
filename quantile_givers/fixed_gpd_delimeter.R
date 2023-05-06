@@ -21,7 +21,7 @@ get_best_delimeter <- function(dl, dr, weights, data, petcentiles, petcentile, s
 
 get_delimeter <- function(percentile) {
   delimeter_by_data <- function(data) {
-    u_vec <- quantile(unlist(data), probs = c(0.95, 0.8, 0.7, 0.55))
+    u_vec <- quantile(unlist(data), probs = c(0.85, 0.8, 0.7, 0.55))
     answer <- summary(ithresh(unlist(data), u_vec, n=100))
     n <- 1000
     petcentiles <- seq(from=1 - (1 - percentile) * 10,
