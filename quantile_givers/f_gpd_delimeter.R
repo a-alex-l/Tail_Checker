@@ -9,12 +9,7 @@ get_delimeter <- function(percentile) {
       u_vec <- quantile(unlist(data), probs = c(0.85, 0.8, 0.7, 0.55))
       treshold_global.trsh <<- ithresh(unlist(data), u_vec, trans = "BC",  n=100)$v_ps / 100
     }
-    p1 <- as.integer(length(data) * 0.5)
-    p2 <- as.integer(length(data))
-    delimeters <- c(
-      q_gpd(unlist(data)       , package="extRemes", method="Lmoments", truncate=treshold_global.trsh, probs=percentile)[1],
-      q_gpd(unlist(data)       , package="extRemes", method="GMLE", truncate=treshold_global.trsh, probs=percentile)[1]
-    )
-    return(max(unlist(delimeters)))
+    delimeter <- q_gpd(unlist(data), package="fExtremes", truncate=treshold_global.trsh, probs=percentile)
+    return(unlist(delimeter[1]))
   }
 }
