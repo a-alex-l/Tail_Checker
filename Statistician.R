@@ -6,7 +6,7 @@ plan(multisession, workers=6)
 options(scipen=999)
 
 TARGET_TN <- 0.999
-SEED <- 8
+SEED <- 15
 DATA_SIZE <- 50000
 MIN_WORK_SIZE <- 100
 set.seed(SEED)
@@ -26,12 +26,15 @@ quantile_givers = list(
   list("source" = "quantile_givers/gpd_gmle_delimeter.R", "name" = "gpd_gmle"),
 #  list("source" = "quantile_givers/gpd_delimeter.R", "name" = "gpd_stnd"),
   list("source" = "quantile_givers/my_gpd_delimeter.R", "name" = "gpd_mine"),
-  list("source" = "quantile_givers/new_delimeter.R", "name" = "gpd__new"),
+#  list("source" = "quantile_givers/new_delimeter.R", "name" = "gpd_new"),
+#  list("source" = "quantile_givers/mean_gpd_delimeter.R", "name" = "gpd_mean"),
+  list("source" = "quantile_givers/fixed_gpd_delimeter.R", "name" = "gpd_fixed"),
   list("source" = "quantile_givers/gpd_Lmoments_delimeter.R", "name" = "gpd_lmom")
 )
 
 tests <- list(
-  list("source" = "tests/LnormTest.R", "name" = "lnorm"),
+#  list("source" = "tests/LnormTest.R", "name" = "lnorm"),
+  list("source" = "tests/PingTest.R", "name" = "ping"),
   list("source" = "tests/StudTest.R", "name" = "stud"),
   list("source" = "tests/NormTest.R", "name" = "norm"),
   list("source" = "tests/CauchyTest.R", "name" = "cauchy")
@@ -54,9 +57,9 @@ for (i in 1:length(tests)) {
       giver_enviroment <- new.env()
       source(quantile_givers[[j]]$source, local=giver_enviroment)
       quantiles <- test_alg_on_data(dataset$data, fixer_enviroment$distrib_fixer, giver_enviroment$get_delimeter(TARGET_TN))
-      for (ind in 2:length(quantiles)) {
-        quantiles[ind] <- quantiles[ind] * 0.01 + quantiles[ind - 1] * 0.99
-      }
+      # for (ind in 2:length(quantiles)) {
+      #   quantiles[ind] <- quantiles[ind] * 0.01 + quantiles[ind - 1] * 0.99
+      # }
       percent <- as.numeric(test_enviroment$get_positions(quantiles, dataset$params, DATA_SIZE - MIN_WORK_SIZE))
       left <- min(min(percent), TARGET_TN)
       right <- max(max(percent), TARGET_TN)

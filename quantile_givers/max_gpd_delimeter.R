@@ -8,11 +8,8 @@ get_delimeter <- function(percentile) {
     p2 <- as.integer(length(data))
     delimeters <- c(
       q_gpd(unlist(data)       , package="extRemes", method="Lmoments", truncate=answer[4] / 100, probs=percentile)[1],
-      q_gpd(unlist(data)       , package="extRemes", method="GMLE", truncate=answer[4] / 100, probs=percentile)[1],
-      q_gpd(unlist(data[1:p1]) , package="extRemes", method="Lmoments", truncate=answer[4] / 100, probs=percentile)[1] * 0.5 + 
-      q_gpd(unlist(data[p1:p2]), package="extRemes", method="GMLE", truncate=answer[4] / 100, probs=percentile)[1] * 0.5
-      
+      q_gpd(unlist(data)       , package="extRemes", method="GMLE", truncate=answer[4] / 100, probs=percentile)[1]
     )
-    return(median(unlist(delimeters)))
+    return(max(unlist(delimeters)))
   }
 }
