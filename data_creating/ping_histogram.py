@@ -1,0 +1,15 @@
+import numpy as np
+import matplotlib.pyplot as plt
+data = np.genfromtxt('out.txt', delimiter=' ')
+print(data.shape)
+print(np.quantile(data, 0.999))
+print(np.quantile(data, 0.998))
+print(np.quantile(data, 0.997))
+print(np.quantile(data, 0.996))
+print(np.quantile(data, 0.995))
+print(np.quantile(data, 0.99))
+print(np.quantile(data, 0.9))
+print(np.quantile(data, 0.5))
+plt.hist(data, bins=50)
+plt.yscale('log')
+plt.show()
