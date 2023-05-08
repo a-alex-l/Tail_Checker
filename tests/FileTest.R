@@ -1,7 +1,7 @@
 library(gtools)
 
 get_data <- function(size) {
-  data <- as.numeric(read.csv("tests/random_ping_51k.txt", sep=" ",
+  data <- as.numeric(read.csv("tests/file_write_50k.txt", sep=" ",
                               check.names=FALSE, header=FALSE))
   data <- data[1:size]
   params <- list()
@@ -25,7 +25,7 @@ get_pos <- function(q, data, start, end) {
 
 
 get_positions <- function(quantiles, params, size) {
-  data <- as.numeric(read.csv("tests/random_ping_51k.txt", sep=" ",
+  data <- as.numeric(read.csv("tests/file_write_50k.txt", sep=" ",
                               check.names=FALSE, header=FALSE))
   n <- length(data)
   data <- sort(data)

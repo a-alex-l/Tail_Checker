@@ -9,33 +9,33 @@ options(scipen=999)
 TARGET_TN <- 0.999
 SEED <- 18
 DATA_SIZE <- 50000
-TEST_COUNT <- 10000
+TEST_COUNT <- 20000
 MIN_WORK_SIZE <- 100
 set.seed(SEED)
 
 test_alg_on_data <- function(data, fixer, algorithm) {
-  for (i in 1:TEST_COUNT) {
-   algorithm(sample(as.numeric(data), MIN_WORK_SIZE))
-  }
-  quantiles <- foreach (i = 1:TEST_COUNT, .combine=c) %dorng% {
+  # for (i in 1:TEST_COUNT) {
+  #   algorithm(sample(as.numeric(data), MIN_WORK_SIZE))
+  # }
+  quantiles <- foreach (i = 1:TEST_COUNT, .combine=c) %do% {
     algorithm(sample(as.numeric(data), MIN_WORK_SIZE))
   }
   return(quantiles)
 }
 
 quantile_givers = list(
-  list("source" = "quantile_givers/max_delimiter.R", "name" = "max"),
+#  list("source" = "quantile_givers/max_delimiter.R", "name" = "max"),
 #  list("source" = "quantile_givers/simple_delimiter.R", "name" = "simple_q"),
-  list("source" = "quantile_givers/linear_delimiter.R", "name" = "linear_q"),
+#  list("source" = "quantile_givers/linear_delimiter.R", "name" = "linear_q"),
 #  list("source" = "quantile_givers/gpd_evir_delimiter.R", "name" = "gpd_evir"),
   list("source" = "quantile_givers/gpd_Lmoments_delimiter.R", "name" = "gpd_lmom"),
-  list("source" = "quantile_givers/pick_gpd_delimiter.R", "name" = "gpd_pick"),
-  list("source" = "quantile_givers/gpd_gmle_delimiter.R", "name" = "gpd_gmle"),
-  list("source" = "quantile_givers/fix_l_gpd_delimiter.R", "name" = "gpd_f_lmom"),
-  list("source" = "quantile_givers/my_gpd_delimiter.R", "name" = "gpd_mine"),
+#  list("source" = "quantile_givers/pick_gpd_delimiter.R", "name" = "gpd_pick"),
+  list("source" = "quantile_givers/gpd_gmle_delimiter.R", "name" = "gpd_gmle")
+#  list("source" = "quantile_givers/fix_l_gpd_delimiter.R", "name" = "gpd_f_lmom"),
+#  list("source" = "quantile_givers/my_gpd_delimiter.R", "name" = "gpd_mine"),
 #  list("source" = "quantile_givers/new_delimiter.R", "name" = "gpd_new"),
 #  list("source" = "quantile_givers/mean_gpd_delimiter.R", "name" = "gpd_mean"),
-  list("source" = "quantile_givers/fix_g_gpd_delimiter.R", "name" = "gpd_f_gmle")
+#  list("source" = "quantile_givers/fix_g_gpd_delimiter.R", "name" = "gpd_f_gmle")
 )
 
 tests <- list(
@@ -65,18 +65,9 @@ for (i in 1:length(tests)) {
     # for (ind in 2:length(quantiles)) {
     #   quantiles[ind] <- quantiles[ind] * 0.01 + quantiles[ind - 1] * 0.99
     # }
-    percent <- as.numeric(test_enviroment$get_positions(quantiles, dataset$params, TEST_COUNT))
-    print('percents created')
-    left <- min(min(percent), TARGET_TN)
-    right <- max(max(percent), TARGET_TN)
-    hist(percent, breaks=50, 
-         xlim=c(left, right),
-         main=paste(tests[[i]]$name, quantile_givers[[j]]$name, '=', signif(mean(percent), digits=5 )))
-    abline(v=TARGET_TN, col="green", lwd=4)
-    abline(v=mean(percent), col="blue", lwd=2)
-    print(paste(tests[[i]]$name, quantile_givers[[j]]$name,
-                "equals to", signif(abs(TARGET_TN - mean(percent)), digits=3),
-                "mean is", signif(mean(percent), digits=5),
-                "std(var) is", signif(sd(percent), digits=5)))
+    percent <- as.numeric(test_enviroment$get_positions(c(mean(quantiles), mean(quantiles) - sd(quantiles)), dataset$params, 2))
+    print(percent)
+    print(mean(quantiles))
+    print(sd(quantiles))
   }
 }
