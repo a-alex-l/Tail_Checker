@@ -28,19 +28,20 @@ quantile_givers = list(
 #  list("source" = "quantile_givers/simple_delimiter.R", "name" = "simple_q"),
 #  list("source" = "quantile_givers/linear_delimiter.R", "name" = "linear_q"),
 #  list("source" = "quantile_givers/gpd_evir_delimiter.R", "name" = "gpd_evir"),
-  list("source" = "quantile_givers/gpd_Lmoments_delimiter.R", "name" = "gpd_lmom"),
+#  list("source" = "quantile_givers/gpd_Lmoments_delimiter.R", "name" = "gpd_lmom"),
 #  list("source" = "quantile_givers/pick_gpd_delimiter.R", "name" = "gpd_pick"),
-  list("source" = "quantile_givers/gpd_gmle_delimiter.R", "name" = "gpd_gmle")
+  list("source" = "quantile_givers/gpd_gmle_delimiter.R", "name" = "gpd_gmle"),
 #  list("source" = "quantile_givers/fix_l_gpd_delimiter.R", "name" = "gpd_f_lmom"),
 #  list("source" = "quantile_givers/my_gpd_delimiter.R", "name" = "gpd_mine"),
 #  list("source" = "quantile_givers/new_delimiter.R", "name" = "gpd_new"),
 #  list("source" = "quantile_givers/mean_gpd_delimiter.R", "name" = "gpd_mean"),
-#  list("source" = "quantile_givers/fix_g_gpd_delimiter.R", "name" = "gpd_f_gmle")
+  list("source" = "quantile_givers/fix_g_gpd_delimiter.R", "name" = "gpd_f_gmle")
 )
 
 tests <- list(
   list("source" = "tests/LnormTest.R", "name" = "lnorm"),
   list("source" = "tests/PingTest.R", "name" = "ping"),
+  list("source" = "tests/FileTest.R", "name" = "fie"),
   list("source" = "tests/StudTest.R", "name" = "stud"),
   list("source" = "tests/NormTest.R", "name" = "norm"),
   list("source" = "tests/CauchyTest.R", "name" = "cauchy")
@@ -65,9 +66,16 @@ for (i in 1:length(tests)) {
     # for (ind in 2:length(quantiles)) {
     #   quantiles[ind] <- quantiles[ind] * 0.01 + quantiles[ind - 1] * 0.99
     # }
-    percent <- as.numeric(test_enviroment$get_positions(c(mean(quantiles), mean(quantiles) - sd(quantiles)), dataset$params, 2))
-    print(percent)
+    print(min(quantiles))
+    print(max(quantiles))
     print(mean(quantiles))
     print(sd(quantiles))
+    quantiles <- sort(quantiles)[1000:TEST_COUNT - 1000]
+    print(min(quantiles))
+    print(max(quantiles))
+    print(mean(quantiles))
+    print(sd(quantiles))
+    percent <- as.numeric(test_enviroment$get_positions(c(mean(quantiles), mean(quantiles) - sd(quantiles)), dataset$params, 2))
+    print(percent)
   }
 }

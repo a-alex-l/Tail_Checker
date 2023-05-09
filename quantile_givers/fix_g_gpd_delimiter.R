@@ -21,13 +21,13 @@ treshold_global <- {}
 treshold_global.trsh <- -1
 get_delimeter <- function(percentile) {
   delimeter_by_data <- function(data) {
-    if (treshold_global.trsh < 0 || sample(1:1000, 1) == 1) {
+    if (treshold_global.trsh < 0 || sample(1:5000, 1) == 1) {
       u_vec <- quantile(unlist(data), probs = c(0.85, 0.8, 0.7, 0.55))
       treshold_global.trsh <<- ithresh(unlist(data), u_vec,  n=100)$v_ps / 100
     }
     n <- 1000
-    petcentiles <- c(seq(from=0.9, to=0.99, length.out=200),
-                     seq(from=0.99, 0.999, length.out=400),
+    petcentiles <- c(seq(from=0.9, to=0.975, length.out=200),
+                     seq(from=0.975, 0.999, length.out=400),
                      seq(from=0.999, 0.9999, length.out=400))
     delimeters <- q_gpd(unlist(data), package="extRemes", method="GMLE", truncate=treshold_global.trsh, probs=petcentiles)
     sd <- delimeters[601] - delimeters[201]
